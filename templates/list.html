@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block body %}
+
+{% if session.logged_in %}
+<div class="form-group">
+    <form action="{{ url_for('add_entry') }}" method=post class="form-addEntry" enctype=multipart/form-data>
+        <h2 class="form-addEntry-Title">Let's add something new</h2>
+      <dl>
+        <dt>Title:
+        <dd><input required type="text" size=30 class="form-control" name=title id="form-addEntry-Title">
+        <dt>Text:
+        <dd><textarea required class="form-control" name=text rows=5 cols=40 id="form-addEntry-Text"></textarea>
+        <dt>Picture:
+        <dd><input type="file" id="form-addEntry-File" name="content">
+        <dt>Datetime:
+        <dd><input required type=text size=30 name=datetime class='form-control' id="form-addEntry-Datetime">
+        <button class="btn btn-large btn-primary" type="submit">Share</button>
+      </dl>
+    </form>
+</div>
+{% endif %}
+
+<div class="posts">
+    <div class="container-fluid">
+    <div class="row">
+        <div id='postRow' class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+            {% for entry in entries %}
+            <div class="post" id='{{ entry.id }}'>
+                {% if session.logged_in %}
+                <div class="postButtons">
+                    <a class='postEdit' title='Edit post' href="" onclick="return false;"><span onclick='postEdit({{ entry.id }});' class="glyphicon glyphicon-pencil"></span></a><a class='postDelete' title='Delete post' href="{{ url_for('delete_entry', post_id=entry.id) }}"><span class="glyphicon glyphicon-remove"></span></a>
+                </div>
+                {% endif %}
+                <h2 class="postTitle-{{ entry.id }}">{{ entry.title }}</h2>
+                <p class="postDatetime-{{ entry.id }}" id ="postDatetime">⌚ {{ entry.datetime }}</p>
+                {% if entry.content %}
+                    <img src="{{ entry.content }}" id='postImg-{{ entry.id }}' class="img-thumbnail img-responsive"/>
+                {% endif %}
+                <p id='postText' class="postText-{{ entry.id }}">{{ entry.text|safe }}</p>
+            </div>
+
+            {% else %}<div><em>Unbelievable.  No entries here so far</em></div>
+
+            {% endfor %}
+        </div>
+        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+            <div class="about">
+                <h3 class="aboutmeTitle">About me</h3>
+                <img src='static/css/images/me.jpg' class="img-circle img-responsive aboutPhoto"/>
+                <p class="aboutmeText">Привет! Меня зовут Кирилл и мне 17 лет. Я люблю играть на гитаре, путешествовать на велосипеде и, конечно, программировать. Это мой блог, где я записываю интересные мысли. Приятного чтения!</p>
+            </div>
+
+            <div class="followme">
+                <h3 class="followmeTitle">Follow me</h3>
+                <div class="followmeLinks">
+                    <div class="linkVk">
+                    <a href="http://vk.com/kirtolmachev">
+                        <img src="static/css/images/vk.png" class="vkLogo" width="13%" height="13%"/> vk.com/kirtolmachev</a>
+                    </div>
+                    <div class="linkFb">
+                    <a href="http://facebook.com/kirtolmachev'">
+                        <img src="static/css/images/fb.png" class="fbLogo" width="13%" height="13%"/> facebook.com/kirtolmachev</a>
+                    </div>
+                    <div class="linkIn">
+                    <a href="http://linkedin.com/in/kirtolmachev">
+                        <img src="static/css/images/in.png" class="inLogo" width="13%" height="13%"/> linkedin.com/in/kirtolmachev</a>
+                    </div>
+                    <div class="linkInsta">
+                    <a href="http://instagram.com/kirtolmachev">
+                        <img src="static/css/images/instagram.png" class="instaLogo" width="13%" height="13%"/> instagram.com/kirtolmachev</a>
+                    </div>
+                    <div class="linkEmail">
+                    <a>
+                        <img src="static/css/images/email.png" class="emailLogo" width="13%" height="13%"/> kirtolmachev@gmail.com</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ads">
+                <h3 class="adsTitle">Advertisement</h3>
+                <img src='static/css/images/ad3.jpg' class="img-thumbnail img-responsive adsPhoto"/>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+{% endblock %}

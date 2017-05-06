@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <script type="text/javascript" src="static/js/jquery-3.1.1.min.js"></script>
+    <script src="static/js/bootstrap.js"></script>
+    <script type="text/javascript" src="static/js/post_edit.js"></script>
+    <link href="static/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet type=text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Kirill Tolmachev's Blog</title>
+</head>
+<body>
+
+    <div class="nav">
+        {% if entries %}
+            <div class="search">
+                <form class="searchForm" action="#">
+                    <input id="searchPost" class="form-control" placeholder="Search" type="search">
+                    <button onclick="search();" id="searchButton" class="" type="submit"><span id="icon" class="glyphicon glyphicon-search"></span></button>
+                </form>
+            </div>
+        {% endif %}
+        {% if session.logged_in %}
+            <div class=logoutButton>
+                <a href="{{ url_for('logout') }}"><button type="button" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-log-out"></span> Log out</button></a>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="header">
+        <h1 class="headerTitle">Kirill Tolmachev's Blog</h1>
+        <p class="headerGreeting">-welcome back-</p>
+    </div>
+
+    {% for message in get_flashed_messages() %}
+        <div class="flash">
+            <div class="alert alert-info alert-dismissable">
+                  <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                  {{ message }}
+            </div>
+        </div>
+    {% endfor %}
+
+    {% block body %}
+    {% endblock %}
+
+    <div class="footer">
+        <h5 class="copyright">Copyright © Kirill Tolmachev • Kharkov • All rights reserved</h5>
+    </div>
+
+</body>
+</html>
